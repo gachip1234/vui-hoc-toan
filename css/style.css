@@ -122,6 +122,7 @@ h3,
 
 .navbar__list {
   display: flex;
+  align-items: center;
   list-style: none;
 }
 
@@ -130,12 +131,29 @@ h3,
 }
 
 .navbar__link {
+  display: block;
+  width: 100%;
   text-decoration: none;
   font-size: 1.6rem; /* Điều chỉnh lại từ 20px xuống 16px cho cân đối navbar */
   text-transform: uppercase;
+  text-align: center;
+  text-wrap: nowrap;
   color: #34495e;
   font-weight: 600;
   transition: color 0.3s ease;
+}
+.navbar__link-img {
+  display: inline-block;
+  width: 50px;
+  height: 40px;
+  border-radius: 10%;
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.navbar__link-img:hover {
+  box-shadow: 0 0 1px rgba(52, 152, 219, 0.5);
+  transform: scaleX(2);
 }
 
 .navbar__link:hover {
@@ -156,9 +174,9 @@ h3,
   grid-template-columns: 1fr 1fr;
   gap: 4rem; /* Tạo khoảng cách an toàn giữa ảnh và chữ */
   align-items: center;
-  background: linear-gradient(135deg, #3498db, #2c3e50);
+  background: linear-gradient(135deg, #afdda6, #25703c);
   color: white;
-  padding: 4rem 8%; /* Đồng bộ khoảng cách lề với navbar và classes */
+  padding: 8rem 8%; /* Đồng bộ khoảng cách lề với navbar và classes */
 }
 
 .hero__img {
@@ -167,7 +185,8 @@ h3,
   position: relative;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 25px #d1ec6f;
+  transition: all 0.5s ease;
 }
 
 .hero__img-item {
@@ -178,9 +197,11 @@ h3,
   object-fit: cover;
   transition: transform 0.5s ease;
 }
-
+.hero__img:hover {
+  box-shadow: 0 0 0 transparent;
+}
 .hero__img:hover .hero__img-item {
-  transform: scale(1.05); /* Hiệu ứng zoom nhẹ ảnh khi hover vào khối */
+  transform: scale(1.05);
 }
 
 .hero__img-caption {
