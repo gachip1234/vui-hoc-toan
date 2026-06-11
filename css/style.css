@@ -1,0 +1,220 @@
+/* Reset cài đặt mặc định */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* Cài đặt cơ bản - Quy đổi 1rem = 10px */
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+h1,
+h2,
+h3,
+.navbar__logo {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+/* ==========================================
+   COMPONENTS TRÙNG LẶP (Block: btn)
+   ========================================== */
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  padding: 1.2rem 3rem; /* Đồng bộ theo hệ rem */
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn--primary {
+  background-color: #3498db;
+  color: white;
+  padding: 0.8rem 2rem;
+  font-size: 1.4rem;
+  border-radius: 4px;
+}
+
+.btn--secondary {
+  background-color: #e67e22;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================
+   BLOCK: NAVBAR
+   ========================================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 8%;
+  background-color: #ffffff;
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.1),
+    inset 0 0 15px #3498db;
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  font-size: 2.4rem;
+  color: #2c3e50;
+}
+
+.navbar__logo-img {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin-right: 5px;
+  border-radius: 10%;
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.navbar__logo-img:hover {
+  box-shadow: 0 0 1px rgba(52, 152, 219, 0.5);
+}
+
+.navbar__logo-title {
+  display: flex;
+  width: 80px;
+  padding-left: 8px;
+  flex-direction: column;
+  color: #3498db;
+  font-weight: 900;
+  border-left: 4px solid #3498db;
+  font-size: 1.4rem;
+  margin-left: 8px;
+  transition: all 0.5s ease;
+}
+
+.navbar__logo-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Hiệu ứng ẩn hiện logo tinh tế hơn, không bị giật font-size */
+.navbar__logo-img:hover ~ .navbar__logo-title {
+  opacity: 0;
+  transform: translateX(-10px);
+  visibility: hidden;
+}
+
+.navbar__list {
+  display: flex;
+  list-style: none;
+}
+
+.navbar__item {
+  margin-left: 2rem;
+}
+
+.navbar__link {
+  text-decoration: none;
+  font-size: 1.6rem; /* Điều chỉnh lại từ 20px xuống 16px cho cân đối navbar */
+  text-transform: uppercase;
+  color: #34495e;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.navbar__link:hover {
+  color: #3498db;
+}
+
+.navbar__link--active {
+  color: #3498db;
+  border-bottom: 2px solid #3498db;
+}
+
+/* ==========================================
+   BLOCK: HERO
+   ========================================== */
+.hero {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  color: white;
+  text-align: center;
+  padding: 8rem 2rem;
+}
+
+.hero__title {
+  font-size: 3.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero__desc {
+  font-size: 1.8rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+}
+
+/* ==========================================
+   BLOCK: CLASSES
+   ========================================== */
+.classes {
+  padding: 6rem 8%;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.classes__title {
+  margin-bottom: 4rem;
+  color: #2c3e50;
+  font-size: 2.8rem;
+}
+
+.classes__container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================
+   BLOCK: CARD
+   ========================================== */
+.card {
+  background-color: white;
+  flex: 1;
+  min-width: 220px;
+  padding: 3rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-top: 5px solid #3498db;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card__title {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+.card__desc {
+  color: #7f8c8d;
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
