@@ -85,6 +85,17 @@
 
     <section class="classes">
       <h2 class="classes__title">Chọn Khối Lớp Của Bạn</h2>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="classSearchInput"
+          class="search-box__input"
+          placeholder="Nhập lớp hoặc chủ đề bạn muốn tìm... (Ví dụ: Lớp 9, Hình học, Căn thức)"
+        />
+        <span class="search-box__icon">🔍</span>
+      </div>
+
       <div class="classes__container">
         <div class="card">
           <h3 class="card__title">Toán Lớp 6</h3>
@@ -119,5 +130,25 @@
         </div>
       </div>
     </section>
+
+    <div class="modal" id="welcomeModal">
+      <div class="modal__overlay"></div>
+      <div class="modal__container">
+        <button class="modal__close" id="closeModalBtn">&times;</button>
+
+        <div class="modal__content">
+          <div class="modal__icon">🚀📐</div>
+          <h2 class="modal__title">Chào Mừng Học Sinh!</h2>
+          <p class="modal__desc" id="modalMessage">
+            Hãy cùng nhau khám phá những bí ẩn toán học và chinh phục điểm 10
+            nhé!
+          </p>
+          <button class="btn btn--secondary modal__btn" id="acceptModalBtn">
+            Bắt Đầu Thôi Vui Quá!
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="./js/main.js"></script>
   </body>
 </html>
