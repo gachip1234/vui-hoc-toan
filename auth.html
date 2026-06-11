@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Ký Thành Viên - Vui Học Toán</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2 family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="auth-body">
+    <div class="auth-container">
+      <a href="index.html" class="auth-container__back">⬅️ Quay về Trang Chủ</a>
+
+      <form class="auth-form" id="registerForm">
+        <h2 class="auth-form__title">Tạo Tài Khoản Học Sinh</h2>
+        <p class="auth-form__subtitle">
+          Tham gia cộng đồng toán học để nhận nhiều thử thách thú vị!
+        </p>
+
+        <div class="auth-form__group">
+          <label for="fullName" class="auth-form__label"
+            >Họ và tên của em</label
+          >
+          <input
+            type="text"
+            id="fullName"
+            class="auth-form__input"
+            placeholder="Ví dụ: Nguyễn Văn A"
+          />
+          <span class="auth-form__message"></span>
+        </div>
+
+        <div class="auth-form__group">
+          <label for="email" class="auth-form__label"
+            >Địa chỉ Email (hoặc của phụ huynh)</label
+          >
+          <input
+            type="email"
+            id="email"
+            class="auth-form__input"
+            placeholder="emhoc@toan.com"
+          />
+          <span class="auth-form__message"></span>
+        </div>
+
+        <div class="auth-form__group">
+          <label for="password" class="auth-form__label"
+            >Mật khẩu (Ít nhất 6 ký tự)</label
+          >
+          <input
+            type="password"
+            id="password"
+            class="auth-form__input"
+            placeholder="••••••••"
+          />
+          <span class="auth-form__message"></span>
+        </div>
+
+        <div class="auth-form__group">
+          <label for="passwordConfirm" class="auth-form__label"
+            >Nhập lại mật khẩu</label
+          >
+          <input
+            type="password"
+            id="passwordConfirm"
+            class="auth-form__input"
+            placeholder="••••••••"
+          />
+          <span class="auth-form__message"></span>
+        </div>
+
+        <button type="submit" class="btn btn--secondary auth-form__btn">
+          Đăng Ký Ngay 🚀
+        </button>
+      </form>
+    </div>
+
+    <script src="./js/auth.js"></script>
+  </body>
+</html>

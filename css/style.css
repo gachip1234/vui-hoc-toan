@@ -12,6 +12,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Giải pháp tối ưu cho Fixed Navbar: Đẩy toàn bộ trang xuống bằng đúng chiều cao navbar */
+body {
+  padding-top: 10rem;
+}
+
 h1,
 h2,
 h3,
@@ -26,7 +31,7 @@ h3,
 .btn {
   display: inline-block;
   text-decoration: none;
-  padding: 1.2rem 3rem; /* Đồng bộ theo hệ rem */
+  padding: 1.2rem 3rem;
   font-size: 1.6rem;
   border: none;
   border-radius: 5px;
@@ -55,7 +60,7 @@ h3,
 }
 
 /* ==========================================
-   BLOCK: NAVBAR
+   BLOCK: NAVBAR (Fixed Top Standard)
    ========================================== */
 .navbar {
   display: flex;
@@ -64,9 +69,10 @@ h3,
   left: 0;
   right: 0;
   z-index: 999;
+  height: 10rem; /* Cố định chiều cao rõ ràng để body đồng bộ padding-top */
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 8%;
+  padding: 0 8%;
   background-color: #ffffff;
   box-shadow:
     0 2px 5px rgba(0, 0, 0, 0.1),
@@ -113,7 +119,6 @@ h3,
   justify-content: space-between;
 }
 
-/* Hiệu ứng ẩn hiện logo tinh tế hơn, không bị giật font-size */
 .navbar__logo-img:hover ~ .navbar__logo-title {
   opacity: 0;
   transform: translateX(-10px);
@@ -132,27 +137,13 @@ h3,
 
 .navbar__link {
   display: block;
-  width: 100%;
   text-decoration: none;
-  font-size: 1.6rem; /* Điều chỉnh lại từ 20px xuống 16px cho cân đối navbar */
+  font-size: 1.6rem;
   text-transform: uppercase;
   text-align: center;
   color: #34495e;
   font-weight: 600;
   transition: color 0.3s ease;
-}
-.navbar__link-img {
-  display: inline-block;
-  width: 50px;
-  height: 40px;
-  border-radius: 10%;
-  box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
-  cursor: pointer;
-  transition: all 0.5s ease;
-}
-.navbar__link-img:hover {
-  box-shadow: 0 0 1px rgba(52, 152, 219, 0.5);
-  transform: scaleX(2);
 }
 
 .navbar__link:hover {
@@ -164,22 +155,43 @@ h3,
   border-bottom: 2px solid #3498db;
 }
 
+/* Định dạng Icon Ảnh Lớp Học Trên Thanh Menu */
+.navbar__link-img {
+  display: inline-block;
+  width: 50px;
+  height: 40px;
+  border-radius: 10%;
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
+  cursor: pointer;
+  /* Tăng thời gian chuyển động lên 0.5s và dùng hiệu ứng cubic-bezier để tạo độ nảy khi kéo dãn */
+  transition:
+    transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.5s ease;
+}
+
+/* Hiệu ứng gõ ngang yêu thích của bạn nhưng mượt hơn */
+.navbar__link-img:hover {
+  box-shadow: 0 0 25px rgba(52, 152, 219, 0.6);
+  transform: scaleX(
+    1.5
+  ); /* Giảm xuống 1.8 một chút để vừa vặn, không lấn sang chữ bên cạnh */
+}
+
 /* ==========================================
-   BLOCK: HERO
+   BLOCK: HERO (Green Edu Style)
    ========================================== */
 .hero {
-  margin-top: 10.5rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem; /* Tạo khoảng cách an toàn giữa ảnh và chữ */
+  gap: 4rem;
   align-items: center;
   background: linear-gradient(135deg, #afdda6, #25703c);
   color: white;
-  padding: 8rem 8%; /* Đồng bộ khoảng cách lề với navbar và classes */
+  padding: 6rem 8%;
 }
 
 .hero__img {
-  margin: 0; /* Xóa margin mặc định của thẻ figure */
+  margin: 0;
   width: 100%;
   position: relative;
   border-radius: 15px;
@@ -192,13 +204,15 @@ h3,
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 2 / 1; /* Định hình tỷ lệ ảnh chuẩn, không bị méo */
+  aspect-ratio: 2 / 1;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
+
 .hero__img:hover {
-  box-shadow: 0 0 0 transparent;
+  box-shadow: 0 0 35px #d1ec6f;
 }
+
 .hero__img:hover .hero__img-item {
   transform: scale(1.05);
 }
@@ -208,7 +222,7 @@ h3,
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(44, 62, 80, 0.8); /* Nền tối mờ giúp chữ nổi bật */
+  background: rgba(44, 62, 80, 0.8);
   color: #fff;
   padding: 1rem;
   font-size: 1.2rem;
@@ -218,7 +232,7 @@ h3,
 }
 
 .hero__content {
-  text-align: left; /* Căn trái toàn bộ chữ để đọc thuận mắt hơn ở dạng 2 cột */
+  text-align: left;
 }
 
 .hero__title {
@@ -234,28 +248,28 @@ h3,
   opacity: 0.9;
   line-height: 1.6;
 }
+
 /* ==========================================
-   BLOCK: SEARCH BOX (Thanh tìm kiếm thông minh)
+   BLOCK: SEARCH BOX
    ========================================== */
 .search-box {
   position: relative;
   max-width: 500px;
-  margin: 0 auto 4rem auto; /* Căn giữa và tạo khoảng cách với danh sách lớp bên dưới */
+  margin: 0 auto 4rem auto;
 }
 
 .search-box__input {
   width: 100%;
-  padding: 1.5rem 5rem 1.5rem 2rem; /* Trừa khoảng trống bên phải cho icon kính lúp */
+  padding: 1.5rem 5rem 1.5rem 2rem;
   font-size: 1.6rem;
   border: 2px solid #bdc3c7;
-  border-radius: 30px; /* Bo tròn dài tạo cảm giác mượt mà */
+  border-radius: 30px;
   outline: none;
   transition: all 0.3s ease;
   color: #2c3e50;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
-/* Hiệu ứng đổi màu viền khi học sinh click chuột vào ô tìm kiếm */
 .search-box__input:focus {
   border-color: #3498db;
   box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
@@ -267,12 +281,12 @@ h3,
   top: 50%;
   transform: translateY(-50%);
   font-size: 2rem;
-  pointer-events: none; /* Tránh cản trở chuột khi click */
+  pointer-events: none;
 }
-/* ==========================================
-   BLOCK: CLASSES
-   ========================================== */
 
+/* ==========================================
+   BLOCK: CLASSES & CARD
+   ========================================== */
 .classes {
   padding: 6rem 8%;
   text-align: center;
@@ -292,9 +306,6 @@ h3,
   flex-wrap: wrap;
 }
 
-/* ==========================================
-   BLOCK: CARD
-   ========================================== */
 .card {
   background-color: white;
   flex: 1;
@@ -327,7 +338,7 @@ h3,
 }
 
 /* ==========================================
-   BLOCK: MODAL (Thiết kế thân thiện, hoạt họa)
+   BLOCK: MODAL & ANIMATIONS
    ========================================== */
 .modal {
   position: fixed;
@@ -335,58 +346,48 @@ h3,
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 9999; /* Luôn nằm trên cùng tất cả các thành phần khác */
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Mặc định ẩn hoàn toàn */
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease-in-out;
 }
 
-/* Lớp phủ mờ phía sau */
 .modal__overlay {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(44, 62, 80, 0.6); /* Màu nền tối mờ */
-  backdrop-filter: blur(
-    4px
-  ); /* Làm nhòe nhẹ giao diện phía sau trông rất sang */
+  background-color: rgba(44, 62, 80, 0.6);
+  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
-/* Hộp thoại chính */
 .modal__container {
   position: relative;
   background-color: #ffffff;
   width: 90%;
   max-width: 450px;
   padding: 4rem 3rem;
-  border-radius: 24px; /* Bo tròn sâu tạo cảm giác hoạt họa, thân thiện */
+  border-radius: 24px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
   z-index: 10;
-  border: 4px solid #3498db; /* Viền xanh toán học */
-
-  /* Hiệu ứng thu nhỏ ban đầu để tạo đà phóng to */
+  border: 4px solid #3498db;
   transform: scale(0.7);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Hiệu ứng Bounce (Nảy nhẹ) */
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Khi Modal được kích hoạt trạng thái mở */
 .modal--open {
   opacity: 1;
   visibility: visible;
 }
 
 .modal--open .modal__container {
-  transform: scale(1); /* Phóng to về kích thước chuẩn kèm hiệu ứng nảy */
+  transform: scale(1);
 }
 
-/* Nút Đóng (Dấu X) */
 .modal__close {
   position: absolute;
   top: 1.5rem;
@@ -400,14 +401,13 @@ h3,
 }
 
 .modal__close:hover {
-  color: #e74c3c; /* Đổi sang đỏ khi di chuột */
+  color: #e74c3c;
 }
 
-/* Thành phần bên trong nội dung */
 .modal__icon {
   font-size: 6rem;
   margin-bottom: 1.5rem;
-  animation: bounce 2s infinite; /* Hiệu ứng icon nhún nhảy vui nhộn */
+  animation: bounce 2s infinite;
 }
 
 .modal__title {
@@ -429,7 +429,7 @@ h3,
   box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
 }
 
-/* Keyframe tạo hiệu ứng nhún nhảy cho Icon */
+/* ĐỊNH NGHĨA KEYFRAMES CHUYỂN ĐỘNG */
 @keyframes bounce {
   0%,
   100% {
@@ -438,4 +438,118 @@ h3,
   50% {
     transform: translateY(-10px);
   }
+}
+
+/* Khai báo animation fadeIn phục vụ cho bộ lọc JS */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================
+   BLOCK: AUTH PAGE (Trang Đăng Ký / Đăng Nhập)
+   ========================================== */
+.auth-body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.auth-container {
+  position: relative;
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 480px;
+  padding: 4rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-container__back {
+  display: inline-block;
+  font-size: 1.4rem;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+  transition: transform 0.2s;
+}
+
+.auth-container__back:hover {
+  transform: translateX(-5px);
+}
+
+.auth-form__title {
+  font-size: 2.6rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.auth-form__subtitle {
+  font-size: 1.4rem;
+  color: #7f8c8d;
+  margin-bottom: 3rem;
+  line-height: 1.5;
+}
+
+.auth-form__group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.auth-form__label {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 0.8rem;
+}
+
+.auth-form__input {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  font-size: 1.5rem;
+  border: 2px solid #dcdde1;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Các trạng thái khi Validate */
+.auth-form__group.invalid .auth-form__input {
+  border-color: #e74c3c;
+  background-color: #fff5f5;
+}
+
+.auth-form__group.valid .auth-form__input {
+  border-color: #2ecc71;
+  background-color: #f5fdf8;
+}
+
+.auth-form__message {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 0.6rem;
+  min-height: 1.8rem; /* Giữ chỗ để không bị giật giao diện khi hiện chữ báo lỗi */
+}
+
+.auth-form__group.invalid .auth-form__message {
+  color: #e74c3c;
+}
+
+.auth-form__btn {
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 1.6rem;
+  padding: 1.4rem;
 }
