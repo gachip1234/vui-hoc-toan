@@ -137,7 +137,6 @@ h3,
   font-size: 1.6rem; /* Điều chỉnh lại từ 20px xuống 16px cho cân đối navbar */
   text-transform: uppercase;
   text-align: center;
-  text-wrap: nowrap;
   color: #34495e;
   font-weight: 600;
   transition: color 0.3s ease;
@@ -357,7 +356,6 @@ h3,
     4px
   ); /* Làm nhòe nhẹ giao diện phía sau trông rất sang */
   -webkit-backdrop-filter: blur(4px);
-  -moz-backdrop-filter: blur(4px);
 }
 
 /* Hộp thoại chính */
