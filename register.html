@@ -82,6 +82,77 @@
       </form>
     </div>
 
-    <script src="/js/auth.js"></script>
+    <script type="module">
+      // 1. Nhập các hàm cần thiết từ CDN của Google (Sử dụng phiên bản 12.14.0 mới nhất)
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+      // 2. DÁN ĐOẠN MÃ CẤU HÌNH CONFIG CỦA RIÊNG BẠN VÀO ĐÂY
+      const firebaseConfig = {
+        apiKey: "AIzaSy...",
+        authDomain: "vuihoc-online-d49f1.firebaseapp.com",
+        projectId: "vuihoc-online-d49f1",
+        storageBucket: "vuihoc-online-d49f1.appspot.com",
+        messagingSenderId: "...",
+        appId: "...",
+      };
+
+      // Khởi tạo ứng dụng Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // 3. LOGIC LẮNG NGHE FORM ĐĂNG KÝ
+      const registerForm = document.getElementById("registerForm");
+      const fullName = document.getElementById("fullName");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const passwordConfirm = document.getElementById("passwordConfirm");
+
+      registerForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Kiểm tra hợp lệ form cơ bản
+        if (
+          fullName.value.trim() === "" ||
+          email.value.trim() === "" ||
+          password.value.length < 6
+        ) {
+          alert(
+            "Em hãy điền đầy đủ thông tin và mật khẩu ít nhất 6 ký tự nhé!",
+          );
+          return;
+        }
+
+        if (password.value !== passwordConfirm.value) {
+          alert("Mật khẩu nhập lại chưa trùng khớp em ơi!");
+          return;
+        }
+
+        // Gọi lệnh của Google Firebase để tạo tài khoản lên Cloud
+        createUserWithEmailAndPassword(auth, email.value.trim(), password.value)
+          .then((userCredential) => {
+            alert(
+              `Chúc mừng ${fullName.value.trim()} đã tạo tài khoản thành công trên Google Cloud! 🎉🚀`,
+            );
+
+            // Lưu tạm tên hiển thị vào bộ nhớ để trang chủ nhận diện
+            localStorage.setItem("hocSinhName", fullName.value.trim());
+
+            registerForm.reset();
+            window.location.href = "login.html"; // Chuyển sang trang đăng nhập
+          })
+          .catch((error) => {
+            console.error(error);
+            if (error.code === "auth/email-already-in-use") {
+              alert("Email này đã được đăng ký trên hệ thống rồi em ơi!");
+            } else {
+              alert("Lỗi đăng ký: " + error.message);
+            }
+          });
+      });
+    </script>
   </body>
 </html>

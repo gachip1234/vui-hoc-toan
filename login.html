@@ -54,6 +54,60 @@
       </form>
     </div>
 
-    <script src="/js/auth.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+      // DÁN ĐOẠN MÃ CẤU HÌNH CONFIG CỦA BẠN VÀO ĐÂY (GIỐNG FILE REGISTER)
+      const firebaseConfig = {
+        apiKey: "AIzaSy...",
+        authDomain: "vuihoc-online-d49f1.firebaseapp.com",
+        projectId: "vuihoc-online-d49f1",
+        storageBucket: "vuihoc-online-d49f1.appspot.com",
+        messagingSenderId: "...",
+        appId: "...",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      const loginForm = document.getElementById("loginForm");
+      const loginEmail = document.getElementById("loginEmail");
+      const loginPassword = document.getElementById("loginPassword");
+
+      loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const emailValue = loginEmail.value.trim();
+        const passwordValue = loginPassword.value;
+
+        if (emailValue === "" || passwordValue === "") {
+          alert("Em điền đầy đủ cả Email và Mật khẩu nhé!");
+          return;
+        }
+
+        // Gọi lệnh xác thực đăng nhập của Google
+        signInWithEmailAndPassword(auth, emailValue, passwordValue)
+          .then((userCredential) => {
+            alert("Đăng nhập lớp học toán thành công! 🎉🎒");
+
+            // Vì Firebase Auth lưu user theo Email, tạm thời ta bốc phần chữ trước dấu @ làm tên chào mừng
+            // (Sau này lên Firestore ta sẽ lưu chuẩn tên fullName riêng biệt sau)
+            if (!localStorage.getItem("hocSinhName")) {
+              const stubName = emailValue.split("@")[0];
+              localStorage.setItem("hocSinhName", stubName);
+            }
+
+            window.location.href = "index.html"; // Quay về trang chủ
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("Email hoặc Mật khẩu chưa đúng rồi kìa em ơi!");
+          });
+      });
+    </script>
   </body>
 </html>
