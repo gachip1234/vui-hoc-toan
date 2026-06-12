@@ -97,57 +97,125 @@
           <tbody id="leaderboardBody"></tbody>
         </table>
       </section>
+      <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+        import {
+          getAuth,
+          signOut,
+          onAuthStateChanged,
+        } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const tbody = document.getElementById("leaderboardBody");
+        // Cấu hình Firebase của bạn
+        const firebaseConfig = {
+          apiKey: "AIzaSyC-4jDOIiVbw1-Tvd1ClkazODngr6LCJ04",
+          authDomain: "vuihoc-online.firebaseapp.com",
+          projectId: "vuihoc-online",
+          storageBucket: "vuihoc-online.firebasestorage.app",
+          messagingSenderId: "218183563359",
+          appId: "1:218183563359:web:3278515ee339fdb1a783ea",
+        };
 
-          // Gọi API lấy bảng xếp hạng từ Server
-          fetch("https://vuihoctoan-be.onrender.com/api/leaderboard")
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.success && data.leaderboard.length > 0) {
-                tbody.innerHTML = data.leaderboard
-                  .map(
-                    (student, index) => `
-                        <tr style="border-bottom: 1px solid #edf2f7;">
-                            <td style="padding: 1.2rem; font-weight: bold; color: ${index === 0 ? "#f1c40f" : "#2c3e50"}">#${index + 1}</td>
-                            <td style="padding: 1.2rem;">${student.fullName}</td>
-                            <td style="padding: 1.2rem; text-align: right; font-weight: 600; color: #2ecc71;">${student.score} điểm</td>
-                        </tr>
-                    `,
-                  )
-                  .join("");
-              } else {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 2rem; color: #7f8c8d;">Chưa có học sinh nào nộp bài. Em hãy là người đầu tiên nhé!</td></tr>`;
-              }
-            });
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Lắng nghe trạng thái đăng nhập từ Google Firebase
+        onAuthStateChanged(auth, (user) => {
+          const authArea = document.getElementById("authArea"); // ID vùng chứa các nút Đăng nhập/Đăng ký/Chào mừng
+
+          if (user) {
+            // Nếu học sinh đã đăng nhập thành công
+            const tenHocSinh =
+              localStorage.getItem("hocSinhName") || user.email.split("@")[0];
+
+            authArea.innerHTML = `
+                <div class="user-logged">
+                    <span>👋 Chào em, <strong>${tenHocSinh}</strong>!</span>
+                    <button id="logoutBtn" class="btn btn--outline" style="margin-left: 10px;">Đăng xuất</button>
+                </div>
+            `;
+
+            // Bắt sự kiện nút Đăng xuất
+            document
+              .getElementById("logoutBtn")
+              .addEventListener("click", () => {
+                signOut(auth).then(() => {
+                  localStorage.removeItem("hocSinhName");
+                  alert("Đã đăng xuất tài khoản!");
+                  window.location.reload();
+                });
+              });
+          } else {
+            // Nếu chưa đăng nhập, hiển thị lại 2 nút Đăng nhập / Đăng ký
+            authArea.innerHTML = `
+                <a href="/login.html" class="btn btn--outline">Đăng Nhập</a>
+                <a href="/register.html" class="btn btn--primary">Đăng Ký</a>
+            `;
+          }
         });
       </script>
     </main>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const authArea = document.getElementById("authArea");
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        limit,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-        // Kiểm tra xem trong "két sắt" có lưu tên học sinh nào không
-        const tenHocSinh = localStorage.getItem("hocSinhName");
+      // DÁN ĐOẠN MÃ CẤU HÌNH CONFIG CỦA BẠN VÀO ĐÂY
+      const firebaseConfig = {
+        apiKey: "AIzaSyC-4jDOIiVbw1-Tvd1ClkazODngr6LCJ04",
+        authDomain: "vuihoc-online.firebaseapp.com",
+        projectId: "vuihoc-online",
+        storageBucket: "vuihoc-online.firebasestorage.app",
+        messagingSenderId: "218183563359",
+        appId: "1:218183563359:web:3278515ee339fdb1a783ea",
+      };
 
-        if (tenHocSinh) {
-          // Nếu CÓ học sinh đã đăng nhập: Xóa 2 nút cũ, thay bằng lời chào và nút Đăng xuất
-          authArea.innerHTML = `
-                <span style="font-weight: 600; margin-right: 15px; color: #2c3e50;">👋 Chào em, ${tenHocSinh}!</span>
-                <button id="logoutBtn" class="btn btn--outline" style="padding: 0.6rem 1.5rem; font-size: 1.3rem;">Đăng xuất</button>
-            `;
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-          // Lắng nghe sự kiện bấm nút Đăng xuất
-          document
-            .getElementById("logoutBtn")
-            .addEventListener("click", function () {
-              localStorage.removeItem("hocSinhName"); // Xóa tên khỏi két sắt
-              window.location.reload(); // Tải lại trang để quay về trạng thái cũ
-            });
+      // HÀM TỰ ĐỘNG LẤY TOP 5 ĐIỂM CAO NHẤT TỪ FIRESTORE
+      async function taiBangXepHang() {
+        const leaderboardBody = document.getElementById("leaderboardBody"); // Thay bằng ID thẻ chứa danh sách BXH của bạn
+        if (!leaderboardBody) return;
+
+        try {
+          // Truy vấn lấy dữ liệu từ bảng "bang_diem", sắp xếp theo điểm giảm dần, giới hạn 5 người
+          const q = query(
+            collection(db, "bang_diem"),
+            orderBy("score", "desc"),
+            limit(5),
+          );
+          const querySnapshot = await getDocs(q);
+
+          let html = "";
+          let hang = 1;
+
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            html += `
+                  <tr>
+                      <td>#${hang++}</td>
+                      <td>${data.fullName}</td>
+                      <td><span class="score-badge">${data.score} điểm</span></td>
+                  </tr>
+              `;
+          });
+
+          leaderboardBody.innerHTML =
+            html ||
+            "<tr><td colspan='3'>Chưa có học sinh nào nộp bài. Em hãy là người đầu tiên nhé!</td></tr>";
+        } catch (error) {
+          console.error("Lỗi tải BXH:", error);
         }
-      });
+      }
+
+      // Kích hoạt chạy hàm khi vừa load trang
+      document.addEventListener("DOMContentLoaded", taiBangXepHang);
     </script>
   </body>
 </html>
