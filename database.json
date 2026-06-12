@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1781229968541,
+    "fullName": "Lê Văn Hùng",
+    "email": "nguyenvan@gmail.com",
+    "password": "123456",
+    "score": 10
+  },
+  {
+    "id": 1781230116229,
+    "fullName": "Nguyen Van Hung",
+    "email": "nguyenvan@gmail.con",
+    "password": "123456",
+    "score": 10
+  },
+  {
+    "id": 1781234518477,
+    "fullName": "le van thanh",
+    "email": "nguyenvan@gmail.coc",
+    "password": "123456",
+    "score": 0
+  }
+]

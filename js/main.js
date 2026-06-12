@@ -51,12 +51,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Hàm mở Modal
   function openModal(message) {
     modalMessage.innerHTML = message; // Chèn nội dung thông báo động
-    modal.classList.add("modal--open"); // Thêm class để mở modal
+    setTimeout(() => {
+      modal.classList.add("modal--open"); // Thêm class để mở modal
+    }, 10);
   }
 
   // Hàm đóng Modal
   function closeModal() {
-    modal.classList.remove("modal--open"); // Xóa class để ẩn modal
+    setTimeout(() => {
+      modal.classList.remove("modal--open"); // Xóa class để ẩn modal
+    }, 10);
   }
 
   // Lắng nghe sự kiện click trên các nút "Vào Học" ở từng Card lớp
