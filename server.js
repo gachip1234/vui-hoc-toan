@@ -3,7 +3,8 @@ const path = require("path");
 const mongoose = require("mongoose"); // Gọi thư viện Mongoose chuyên kết nối MongoDB
 const app = express();
 
-const PORT = 3000;
+// Nếu hệ thống Render cấp cổng nào thì dùng cổng đó, nếu không thì mặc định là 3000
+const PORT = process.env.PORT || 3000;
 // DÁN ĐƯỜNG DẪN KẾT NỐI MONGODB ATLAS CỦA BẠN VÀO ĐÂY
 const MONGO_URI =
   "mongodb+srv://nguyenvanhung0101:abcde12345@myclucter.nuprsvk.mongodb.net/?appName=MyClucter";
