@@ -42,8 +42,12 @@ app.use(express.static(__dirname));
 // ==========================================
 
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
-app.get("/auth.html", (req, res) =>
-  res.sendFile(path.join(__dirname, "auth.html")),
+// Xóa dòng app.get('/auth.html') cũ đi và thay bằng 2 dòng này:
+app.get("/register.html", (req, res) =>
+  res.sendFile(path.join(__dirname, "register.html")),
+);
+app.get("/login.html", (req, res) =>
+  res.sendFile(path.join(__dirname, "login.html")),
 );
 app.get("/quiz.html", (req, res) =>
   res.sendFile(path.join(__dirname, "quiz.html")),
