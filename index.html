@@ -14,7 +14,7 @@
   </head>
   <body>
     <header class="header">
-      <a href="index.html" class="logo">📐 VUI HỌC TOÁN</a>
+      <a href="index.html" class="logo">📐 VUI HỌC TOÁN</a>
 
       <nav class="nav">
         <ul class="nav__list">
@@ -57,6 +57,7 @@
           />
         </div>
       </section>
+
       <section
         class="leaderboard-section"
         style="
@@ -97,65 +98,15 @@
           <tbody id="leaderboardBody"></tbody>
         </table>
       </section>
-      <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-        import {
-          getAuth,
-          signOut,
-          onAuthStateChanged,
-        } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-
-        // Cấu hình Firebase của bạn
-        const firebaseConfig = {
-          apiKey: "AIzaSyC-4jDOIiVbw1-Tvd1ClkazODngr6LCJ04",
-          authDomain: "vuihoc-online.firebaseapp.com",
-          projectId: "vuihoc-online",
-          storageBucket: "vuihoc-online.firebasestorage.app",
-          messagingSenderId: "218183563359",
-          appId: "1:218183563359:web:3278515ee339fdb1a783ea",
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Lắng nghe trạng thái đăng nhập từ Google Firebase
-        onAuthStateChanged(auth, (user) => {
-          const authArea = document.getElementById("authArea"); // ID vùng chứa các nút Đăng nhập/Đăng ký/Chào mừng
-
-          if (user) {
-            // Nếu học sinh đã đăng nhập thành công
-            const tenHocSinh =
-              localStorage.getItem("hocSinhName") || user.email.split("@")[0];
-
-            authArea.innerHTML = `
-                <div class="user-logged">
-                    <span>👋 Chào em, <strong>${tenHocSinh}</strong>!</span>
-                    <button id="logoutBtn" class="btn btn--outline" style="margin-left: 10px;">Đăng xuất</button>
-                </div>
-            `;
-
-            // Bắt sự kiện nút Đăng xuất
-            document
-              .getElementById("logoutBtn")
-              .addEventListener("click", () => {
-                signOut(auth).then(() => {
-                  localStorage.removeItem("hocSinhName");
-                  alert("Đã đăng xuất tài khoản!");
-                  window.location.reload();
-                });
-              });
-          } else {
-            // Nếu chưa đăng nhập, hiển thị lại 2 nút Đăng nhập / Đăng ký
-            authArea.innerHTML = `
-                <a href="/login.html" class="btn btn--outline">Đăng Nhập</a>
-                <a href="/register.html" class="btn btn--primary">Đăng Ký</a>
-            `;
-          }
-        });
-      </script>
     </main>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+      import {
+        getAuth,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
       import {
         getFirestore,
         collection,
@@ -165,7 +116,7 @@
         getDocs,
       } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-      // DÁN ĐOẠN MÃ CẤU HÌNH CONFIG CỦA BẠN VÀO ĐÂY
+      // Cấu hình Firebase chính chủ của bạn
       const firebaseConfig = {
         apiKey: "AIzaSyC-4jDOIiVbw1-Tvd1ClkazODngr6LCJ04",
         authDomain: "vuihoc-online.firebaseapp.com",
@@ -175,16 +126,47 @@
         appId: "1:218183563359:web:3278515ee339fdb1a783ea",
       };
 
+      // KHỞI TẠO DUY NHẤT 1 LẦN
       const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
       const db = getFirestore(app);
 
-      // HÀM TỰ ĐỘNG LẤY TOP 5 ĐIỂM CAO NHẤT TỪ FIRESTORE
+      // --- LOGIC 1: LẮNG NGHE ĐĂNG NHẬP ---
+      onAuthStateChanged(auth, (user) => {
+        const authArea = document.getElementById("authArea");
+        if (!authArea) return;
+
+        if (user) {
+          const tenHocSinh =
+            localStorage.getItem("hocSinhName") || user.email.split("@")[0];
+          authArea.innerHTML = `
+              <div class="user-logged" style="display: flex; align-items: center;">
+                  <span>👋 Chào em, <strong>${tenHocSinh}</strong>!</span>
+                  <button id="logoutBtn" class="btn btn--outline" style="margin-left: 10px;">Đăng xuất</button>
+              </div>
+          `;
+
+          document.getElementById("logoutBtn").addEventListener("click", () => {
+            signOut(auth).then(() => {
+              localStorage.removeItem("hocSinhName");
+              alert("Đã đăng xuất tài khoản!");
+              window.location.reload();
+            });
+          });
+        } else {
+          authArea.innerHTML = `
+              <a href="/login.html" class="btn btn--outline">Đăng Nhập</a>
+              <a href="/register.html" class="btn btn--primary">Đăng Ký</a>
+          `;
+        }
+      });
+
+      // --- LOGIC 2: TẢI BẢNG XẾP HẠNG ---
       async function taiBangXepHang() {
-        const leaderboardBody = document.getElementById("leaderboardBody"); // Thay bằng ID thẻ chứa danh sách BXH của bạn
+        const leaderboardBody = document.getElementById("leaderboardBody");
         if (!leaderboardBody) return;
 
         try {
-          // Truy vấn lấy dữ liệu từ bảng "bang_diem", sắp xếp theo điểm giảm dần, giới hạn 5 người
           const q = query(
             collection(db, "bang_diem"),
             orderBy("score", "desc"),
@@ -198,24 +180,24 @@
           querySnapshot.forEach((doc) => {
             const data = doc.data();
             html += `
-                  <tr>
-                      <td>#${hang++}</td>
-                      <td>${data.fullName}</td>
-                      <td><span class="score-badge">${data.score} điểm</span></td>
-                  </tr>
-              `;
+                <tr>
+                    <td style="padding: 1rem;">#${hang++}</td>
+                    <td style="padding: 1rem;">${data.fullName}</td>
+                    <td style="padding: 1rem; text-align: right;"><span class="score-badge">${data.score} điểm</span></td>
+                </tr>
+            `;
           });
 
           leaderboardBody.innerHTML =
             html ||
-            "<tr><td colspan='3'>Chưa có học sinh nào nộp bài. Em hãy là người đầu tiên nhé!</td></tr>";
+            "<tr><td colspan='3' style='text-align:center; padding: 2rem;'>Chưa có học sinh nào nộp bài. Em hãy là người đầu tiên nhé!</td></tr>";
         } catch (error) {
           console.error("Lỗi tải BXH:", error);
         }
       }
 
-      // Kích hoạt chạy hàm khi vừa load trang
-      document.addEventListener("DOMContentLoaded", taiBangXepHang);
+      // Kích hoạt chạy hàm lấy BXH
+      taiBangXepHang();
     </script>
   </body>
 </html>
