@@ -2,6 +2,10 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose"); // Gọi thư viện Mongoose chuyên kết nối MongoDB
 const app = express();
+const cors = require("cors"); // Gọi thư viện mở khóa đường truyền
+
+// Cho phép TẤT CẢ các trang web khác (bao gồm cả GitHub Pages) cấu hình kết nối tới Server này
+app.use(cors());
 
 // Nếu hệ thống Render cấp cổng nào thì dùng cổng đó, nếu không thì mặc định là 3000
 const PORT = process.env.PORT || 3000;

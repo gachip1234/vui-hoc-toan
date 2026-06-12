@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
           email: email.value.trim(),
           password: password.value,
         };
-        fetch("/api/register", {
+        fetch("https://vuihoctoan-be.onrender.com/api/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // BẮN DỮ LIỆU ĐĂNG NHẬP LÊN SERVER KHẢO SÁT DATABASE
       // BẮN DỮ LIỆU ĐĂNG NHẬP LÊN SERVER KHẢO SÁT DATABASE
-      fetch("/api/login", {
+      fetch("https://vuihoctoan-be.onrender.com/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),

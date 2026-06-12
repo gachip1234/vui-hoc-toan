@@ -103,7 +103,7 @@
           const tbody = document.getElementById("leaderboardBody");
 
           // Gọi API lấy bảng xếp hạng từ Server
-          fetch("/api/leaderboard")
+          fetch("https://vuihoctoan-be.onrender.com/api/leaderboard")
             .then((res) => res.json())
             .then((data) => {
               if (data.success && data.leaderboard.length > 0) {

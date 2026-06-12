@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
         score: diemsoduoc,
       };
 
-      fetch("/api/submit-quiz", {
+      fetch("https://vuihoctoan-be.onrender.com/api/submit-quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(baimay),
