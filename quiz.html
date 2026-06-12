@@ -155,66 +155,66 @@
         setDoc,
       } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-      // 1. DÁN ĐOẠN MÃ CẤU HÌNH CONFIG CỦA RIÊNG BẠN VÀO ĐÂY
+      // Cấu hình Firebase của bạn (Giữ nguyên mã thật của bạn nhé)
       const firebaseConfig = {
-        apiKey: "AIzaSyC-4jDOIiVbw1-Tvd1ClkazODngr6LCJ04",
-        authDomain: "vuihoc-online.firebaseapp.com",
-        projectId: "vuihoc-online",
-        storageBucket: "vuihoc-online.firebasestorage.app",
-        messagingSenderId: "218183563359",
-        appId: "1:218183563359:web:3278515ee339fdb1a783ea",
+        apiKey: "AIzaSyByXXXXXXXXXXXX_XXXXXXXXXXXXXX",
+        authDomain: "vuihoc-online-d49f1.firebaseapp.com",
+        projectId: "vuihoc-online-d49f1",
+        storageBucket: "vuihoc-online-d49f1.appspot.com",
+        messagingSenderId: "...",
+        appId: "...",
       };
 
-      // Khởi tạo Firebase và Firestore
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // 2. LOGIC CHẤM ĐIỂM VÀ NỘP BÀI TRỰC TIẾP LÊN GOOGLE CLOUD
-      const submitBtn = document.getElementById("submitBtn"); // Hoặc ID nút nộp bài của bạn
+      // BẮT SỰ KIỆN SUBMIT FORM (CHỈ DÙNG 1 ĐẦU MỐI NÀY)
+      const quizForm = document.getElementById("quizForm");
 
-      // Giả sử đây là hàm xử lý khi học sinh bấm nút "Nộp Bài Lâm"
-      document
-        .getElementById("quizForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
+      if (quizForm) {
+        quizForm.addEventListener("submit", function (e) {
+          e.preventDefault(); // Chặn trang bị tải lại mặc định
 
-          // Đoạn này bạn giữ nguyên logic tính điểm câu 1, câu 2 cũ của bạn nhé
-          // Tôi ví dụ tạm thời tính ra số điểm là:
-          let score = 0;
-          const q1 = document.querySelector('input[name="q1"]:checked');
-          const q2 = document.querySelector('input[name="q2"]:checked');
+          let tongDiem = 0;
 
-          if (q1 && q1.value === "C") score += 5; // Câu 1 đúng được 5 điểm
-          if (q2 && q2.value === "A") score += 5; // Câu 2 đúng được 5 điểm
+          // 1. Lấy đáp án học sinh chọn bằng Name của thẻ Input Radio
+          const cau1 = document.querySelector('input[name="q1"]:checked');
+          const cau2 = document.querySelector('input[name="q2"]:checked');
 
-          // Lấy tên học sinh đang đăng nhập từ bộ nhớ
+          // 2. Logic kiểm tra đáp án và cộng dồn điểm (Mỗi câu đúng +5)
+          if (cau1 && cau1.value === "C") {
+            tongDiem += 5;
+          }
+          if (cau2 && cau2.value === "A") {
+            tongDiem += 5;
+          }
+
+          // 3. Kiểm tra thông tin học sinh
           const currentStudent = localStorage.getItem("hocSinhName");
-
           if (!currentStudent) {
-            alert(
-              "Em hãy đăng nhập trước khi nộp bài để hệ thống ghi nhận điểm số nhé!",
-            );
+            alert("Em hãy đăng nhập trước khi nộp bài nhé!");
             window.location.href = "login.html";
             return;
           }
 
-          // GỌI LỆNH GOOGLE: Lưu hoặc cập nhật điểm của học sinh vào bảng "bảng_điểm"
+          // 4. Bắn điểm số chính xác lên Google Cloud Firestore
           setDoc(doc(db, "bang_diem", currentStudent), {
             fullName: currentStudent,
-            score: score,
+            score: tongDiem, // Lưu số tổngDiem vừa cộng dồn
             updatedAt: new Date(),
           })
             .then(() => {
               alert(
-                `Chúc mừng em đã hoàn thành thử thách! Số điểm của em là: ${score} điểm. Điểm đã được khắc lên Cloud của Google! 🏅`,
+                `Chúc mừng em đã hoàn thành thử thách! Số điểm của em là: ${tongDiem} điểm. 🎉🏅`,
               );
-              window.location.href = "index.html"; // Nộp xong tự về trang chủ để xem BXH
+              window.location.href = "index.html";
             })
             .catch((error) => {
-              console.error("Lỗi ghi điểm:", error);
-              alert("Không thể lưu điểm lên hệ thống đám mây!");
+              console.error("Lỗi lưu điểm:", error);
+              alert("Hệ thống gặp sự cố khi lưu điểm!");
             });
         });
+      }
     </script>
   </body>
 </html>
